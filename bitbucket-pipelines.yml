@@ -1,0 +1,18 @@
+pipelines:
+  tags:
+    v*:
+      - step:
+          name: Deploy to local pypi server
+          script:
+            # bump package version
+            # - echo "__version__ = '1.0.${BITBUCKET_BUILD_NUMBER}'" > demo_pkg/__version__.py
+
+            # Publish your python package to PyPI https://pypi.org/
+            # See more details https://bitbucket.org/atlassian/pypi-publish/src/master
+            - sh tools/check_version.sh $BITBUCKET_TAG
+            - echo "A tag triggered build. $BITBUCKET_TAG"
+            - pipe: atlassian/pypi-publish:0.3.1
+              variables:
+                REPOSITORY: $PYPI_REPOSITORY_URL
+                PYPI_USERNAME: $PYPI_USERNAME
+                PYPI_PASSWORD: $PYPI_PASSWORD
