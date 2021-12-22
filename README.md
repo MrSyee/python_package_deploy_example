@@ -52,6 +52,29 @@ python setup.py sdist
 twine upload --repository local dist/*
 ```
 
+### Poetry 를 이용한 패키지 배포
+
+- Poetry repository 세팅 (`.pypirc`의 역할도 대신하기 때문에 해당 파일이 없어도 동작함.)
+
+```
+# repository 이름 (oplib 는 원하는 이름으로)
+poetry config repositories.local http://10.10.30.16:8008
+
+# 접속하기 위한 보안 정보 등록 (위에서 지정한 id, passwd로)
+poetry config http-basic.local khkim rudghks
+```
+
+- 패키지 빌드 및 배포
+
+```
+# 위에서 설정한 repository 이름인 oplib로 배포
+poetry publish -r oplib --build
+
+# build가 이미 되어있는 경우
+poetry publish -r oplib
+```
+
+
 ### 특정 파일을 패키지에 추가하기
 `MANIFEST.in` 파일에 include 한 후 setup.py에 `include_package_data=True`를 추가한다. (해당 파일 참고)
 
